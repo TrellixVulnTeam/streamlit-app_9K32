@@ -28,8 +28,9 @@ data = load_data(10000)
 data_load_state.text('Data loaded! (using st.cache)')
 
 # Raw data section
-st.subheader('Raw data')
-st.write(data)
+if st.checkbox('Show raw data'):
+    st.subheader('Raw data')
+    st.write(data)
 
 # Histogram section
 st.subheader('Number of pickups by hour')
@@ -40,3 +41,14 @@ hist_values = np.histogram(
 st.bar_chart(hist_values)
 
 # Plot data on map
+if st.checkbox('Show map of all pickups'):
+    st.subheader('Map of all pickups')
+    st.map(data)
+
+# Filter data and map
+hour_to_filter = st.slider('Select hour to filter', 0, 23, 17)
+filtered_data = data[data[DATE_COLUMN].dt.hour == hour_to_filter]
+
+st.subheader(f'Map of all pickups at {hour_to_filter}:00')
+st.map(filtered_data)
+
